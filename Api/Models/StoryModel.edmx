@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="StoriesModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Premium">
+          <Key>
+            <PropertyRef Name="premiumID" />
+          </Key>
+          <Property Name="premiumID" Type="int" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="80" />
+          <Property Name="description" Type="varchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="Story">
+          <Key>
+            <PropertyRef Name="storyID" />
+          </Key>
+          <Property Name="storyID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="title" Type="varchar" MaxLength="800" Nullable="false" />
+          <Property Name="story" Type="varchar" MaxLength="8000" />
+          <Property Name="premium" Type="int" />
+          <Property Name="url" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <Association Name="PremiumFK">
+          <End Role="Premium" Type="Self.Premium" Multiplicity="0..1" />
+          <End Role="Story" Type="Self.Story" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Premium">
+              <PropertyRef Name="premiumID" />
+            </Principal>
+            <Dependent Role="Story">
+              <PropertyRef Name="premium" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="StoriesModelStoreContainer">
+          <EntitySet Name="Premium" EntityType="Self.Premium" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Story" EntityType="Self.Story" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="PremiumFK" Association="Self.PremiumFK">
+            <End Role="Premium" EntitySet="Premium" />
+            <End Role="Story" EntitySet="Story" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="StoriesModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Premium">
+          <Key>
+            <PropertyRef Name="premiumID" />
+          </Key>
+          <Property Name="premiumID" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="description" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Stories" Relationship="Self.PremiumFK" FromRole="Premium" ToRole="Story" />
+        </EntityType>
+        <EntityType Name="Story">
+          <Key>
+            <PropertyRef Name="storyID" />
+          </Key>
+          <Property Name="storyID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="title" Type="String" MaxLength="800" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="story1" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
+          <Property Name="premium" Type="Int32" />
+          <Property Name="url" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Premium1" Relationship="Self.PremiumFK" FromRole="Story" ToRole="Premium" />
+        </EntityType>
+        <Association Name="PremiumFK">
+          <End Role="Premium" Type="Self.Premium" Multiplicity="0..1" />
+          <End Role="Story" Type="Self.Story" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Premium">
+              <PropertyRef Name="premiumID" />
+            </Principal>
+            <Dependent Role="Story">
+              <PropertyRef Name="premium" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="StoriesEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Premiums" EntityType="Self.Premium" />
+          <EntitySet Name="Stories" EntityType="Self.Story" />
+          <AssociationSet Name="PremiumFK" Association="Self.PremiumFK">
+            <End Role="Premium" EntitySet="Premiums" />
+            <End Role="Story" EntitySet="Stories" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="StoriesModelStoreContainer" CdmEntityContainer="StoriesEntities">
+          <EntitySetMapping Name="Premiums">
+            <EntityTypeMapping TypeName="StoriesModel.Premium">
+              <MappingFragment StoreEntitySet="Premium">
+                <ScalarProperty Name="premiumID" ColumnName="premiumID" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="description" ColumnName="description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Stories">
+            <EntityTypeMapping TypeName="StoriesModel.Story">
+              <MappingFragment StoreEntitySet="Story">
+                <ScalarProperty Name="storyID" ColumnName="storyID" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="story1" ColumnName="story" />
+                <ScalarProperty Name="premium" ColumnName="premium" />
+                <ScalarProperty Name="url" ColumnName="url" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
