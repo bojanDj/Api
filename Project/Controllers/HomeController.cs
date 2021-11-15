@@ -17,7 +17,7 @@ namespace Project.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index", "Story", new { area = "" });
         }
 
         public ActionResult About()
@@ -31,7 +31,7 @@ namespace Project.Controllers
         {
             Session["TokenNumber"] = null;
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Story", new { area = "" });
         }
 
         public async Task<ActionResult> Login(User user)
